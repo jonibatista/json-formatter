@@ -17,6 +17,10 @@ Features
 
 A background worker is used to prevent the UI freezing when processing very long JSON pages.
 
+In Progress
+------
+* Print in Table format
+
 Installation
 ------------
 
