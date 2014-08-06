@@ -433,10 +433,10 @@
       html += '<th id="' + keys[i] + '">' + keys[i] + '</th>'; 
     }
 
-    html += '</tr></thead><tbody></tbody></table>';
+    html += '</tr></thead><tbody id="jfTableBody"></tbody></table>';
     jfTableContent.innerHTML = html;
 
-    table = document.getElementById("jfTable");
+    var tbody = document.getElementById("jfTableBody");
     for (var n = 0; n < json.length; n++) {
       var newRow = baseRow.cloneNode(false);
 
@@ -447,7 +447,7 @@
         cell.appendChild(document.createTextNode(json[n][key]))
       }
 
-      table.appendChild(newRow);
+      tbody.appendChild(newRow);
     }
   };  
 
