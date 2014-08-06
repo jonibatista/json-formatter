@@ -225,6 +225,10 @@
               script.innerHTML = 'window.json = ' + JSON.parse(JSON.stringify(msg[2])) + ';' ;
               document.head.appendChild(script) ;
               console.log('JSON Formatter: Type "json" to inspect.') ;
+
+              // parse json object into html table
+              // This might be refectored because it might be not well integrated with the project authors source.  
+              jsonToTable(JSON.parse(msg[2]));
             }, 100) ;
 
           break ;
@@ -277,7 +281,6 @@
 
             jfTableContent = document.createElement('div') ;
             jfTableContent.id = 'jfTableContent' ;
-            jfTableContent.innerHTML = '<h1>TODO</h1>';
             jfTableContent.hidden = true ;
             document.body.appendChild(jfTableContent) ;
 
@@ -287,8 +290,9 @@
               text: pre.innerText,
               length: jsonLength
             });
-        
+          
           // Now, this script will just wait to receive anything back via another port message. The returned message will be something like "NOT JSON" or "IS JSON"
+      
       }
   }
   
@@ -416,5 +420,35 @@
       }
     }
   }
+
+  function jsonToTable(json) {
+    var html = '<table id="jfTable" style="padding-top:40px; width: 100%;display:table;"><thead><tr>',
+     keys = Object.keys(json[0]),
+     baseRow = document.createElement('tr'),
+     table;
+     
+    for (var i = 0; i < keys.length; i++) {
+      var cell = baseRow.insertCell(-1);
+      cell.className = keys[i];
+      html += '<th id="' + keys[i] + '">' + keys[i] + '</th>'; 
+    }
+
+    html += '</tr></thead><tbody></tbody></table>';
+    jfTableContent.innerHTML = html;
+
+    table = document.getElementById("jfTable");
+    for (var n = 0; n < json.length; n++) {
+      var newRow = baseRow.cloneNode(false);
+
+      for (var i = 0; i < keys.length; i++) {
+        var key = keys[i];
+        var cell = newRow.insertCell(-1);
+        cell.className = key;
+        cell.appendChild(document.createTextNode(json[n][key]))
+      }
+
+      table.appendChild(newRow);
+    }
+  };  
 
 })();
