@@ -444,11 +444,30 @@
         var key = keys[i];
         var cell = newRow.insertCell(-1);
         cell.className = key;
-        cell.appendChild(document.createTextNode(json[n][key]))
+
+        if( typeof json[n][key] != 'undefined' && json[n][key] !== null && json[n][key].length == 21){
+          var date = new Date(parseInt(json[n][key].substr(6)));
+          if(isNaN(date)){
+            cell.appendChild(document.createTextNode(json[n][key]));        
+          }else{
+            cell.appendChild(document.createTextNode(date.hhmmyyyymmdd()));     
+          }
+        }else{  
+          cell.appendChild(document.createTextNode(json[n][key]));        
+        }
       }
 
       tbody.appendChild(newRow);
     }
-  };  
+  }; 
+
+  Date.prototype.hhmmyyyymmdd = function() {
+   var yyyy = this.getFullYear().toString();
+   var MM = (this.getMonth()+1).toString(); // getMonth() is zero-based
+   var dd  = this.getDate().toString();
+   var hh = this.getHours().toString();
+   var mm = this.getMinutes().toString();
+   return (hh[1]?hh:"0"+hh[0])+ ':' + (mm[1]?mm:"0"+mm[0]) + ' ' + yyyy + '/' + (MM[1]?MM:"0"+MM[0]) + '/' + (dd[1]?dd:"0"+dd[0]); // padding
+  }; 
 
 })();
